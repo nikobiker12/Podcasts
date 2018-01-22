@@ -376,17 +376,6 @@ namespace Podcasts
                     {
                         return null;
                     }
-
-                    // Old DB
-                    var castPlaylistsTable = Library.MobileServiceClient.GetTable<castPlaylists>();
-                    var result = await castPlaylistsTable.Where(c => c.userId == uniqueUserID && c.Date > fileDate).ToListAsync();
-
-                    if (result.Count > 0)
-                    {
-                        var entry = result[0];
-
-                        return entry.Data.DecompressJson();
-                    }
                 }
                 catch
                 {

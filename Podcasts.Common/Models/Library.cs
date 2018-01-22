@@ -9,7 +9,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.Connectivity;
-using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
@@ -19,7 +18,6 @@ namespace Podcasts
 {
     public static class Library
     {
-        static readonly MobileServiceClient mobileServiceClient = new MobileServiceClient("https://urzagatherer.azure-mobile.net/", "XWLSswZIfsbPfjflmKVVdoLPHvluzE72");
         public static ObservableCollection<Podcast> Podcasts { get; }
         public static ObservableCollection<Episode> DownloadedEpisodes { get; }
 
@@ -140,8 +138,6 @@ namespace Podcasts
         {
             get { return Podcasts.Select(p => p.Category).Distinct().ToArray(); }
         }
-
-        public static MobileServiceClient MobileServiceClient => mobileServiceClient;
 
         public static async Task SaveCastFile(StorageFile libraryFile = null)
         {
@@ -615,18 +611,6 @@ namespace Podcasts
                     if (oneDriveData != null)
                     {
                         return string.IsNullOrEmpty(oneDriveData) ? null : oneDriveData;
-                    }
-
-                    // Old DB
-                    var castsTable = mobileServiceClient.GetTable<casts>();
-
-                    var result = await castsTable.Where(c => c.userId == uniqueUserID && c.Date > fileDate).ToListAsync();
-
-                    if (result.Count > 0)
-                    {
-                        var entry = result[0];
-
-                        return entry.Data.DecompressJson();
                     }
                 }
                 catch

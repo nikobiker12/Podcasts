@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using Windows.Media.Playback;
+using Windows.Storage;
 
 namespace Podcasts
 {
@@ -346,9 +346,9 @@ namespace Podcasts
 
         public static async Task<string> GetFromCloudAsync()
         {
-            Debug.WriteLine("> Check playlist on the cloud");
-            if (LocalSettings.Instance.ForceCloudSync || LocalSettings.Instance.CloudSync)
+            if ((LocalSettings.Instance.ForceCloudSync || LocalSettings.Instance.CloudSync) && !OneDriveSettings.Instance.NotInitialized)
             {
+                Debug.WriteLine("> Check playlist on the cloud");
                 var uniqueUserID = AppSettings.Instance.UniqueUserId;
 
                 try

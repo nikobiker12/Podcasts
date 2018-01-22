@@ -27,6 +27,8 @@ namespace Podcasts
             }
         }
 
+        public bool NotInitialized => notInitialized;
+
         public bool CheckInProgress
         {
             get

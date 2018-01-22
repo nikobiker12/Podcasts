@@ -593,12 +593,10 @@ namespace Podcasts
 
         public static async Task<string> GetFromCloudAsync()
         {
-            var uniqueUserID = AppSettings.Instance.UniqueUserId;
-
-            Debug.WriteLine("> Load library on OneDrive");
-
-            if (LocalSettings.Instance.CloudSync)
+            if (LocalSettings.Instance.CloudSync && ! OneDriveSettings.Instance.NotInitialized)
             {
+                Debug.WriteLine("> Load library on OneDrive");
+                var uniqueUserID = AppSettings.Instance.UniqueUserId;
                 try
                 {
                     var fileDate = DateTime.MinValue;
